@@ -227,9 +227,9 @@
             var getCodeSystems = function() {
                 var dfd = $.Deferred();
 
-                $.getJSON("/snowstorm/snomed-ct/codesystems", function(result) {}).done(function(result) {
-                    options.serverUrl = "/snowstorm/snomed-ct";
-                    options.queryServerUrl = "/snowstorm/snomed-ct";
+                $.getJSON("https://seabreeze.conteir.no/codesystems", function(result) {}).done(function(result) {
+                    options.serverUrl = "https://seabreeze.conteir.no";
+                    options.queryServerUrl = "https://seabreeze.conteir.no";
                     options.releases = result;
 
                     const internationalEditionShortNames = ['SNOMEDCT', 'SNOMEDCT-ES'];
@@ -249,7 +249,8 @@
                                 return 1;
                             }
 
-                            return a.name.localeCompare(b.name);
+                            if(a.name && b.name) return a.name.localeCompare(b.name);
+                            return 0;
                         });
                     }
 
@@ -297,7 +298,8 @@
 
                     // sort local extensions again
                     localReleases.sort(function(a, b) {
-                        return a.name.localeCompare(b.name);
+                        if(a.name && b.name) return a.name.localeCompare(b.name);
+                        return 0;
                     });
 
                     if (options.publicBrowser) {
@@ -967,7 +969,7 @@
         }
 
         function initVersionsDropdown(release) {
-            $.getJSON("/snowstorm/snomed-ct/codesystems/" + release.shortName + "/versions?showFutureVersions=false&showInternalReleases=false", function(result) {}).done(function(result) {
+            $.getJSON("https://seabreeze.conteir.no/codesystems/" + release.shortName + "/versions?showFutureVersions=false&showInternalReleases=false", function(result) {}).done(function(result) {
                 var $versionSwitcher = $('#versionSwitcher');
                 $versionSwitcher.html("");
                 if (result.items.length > 0) {
@@ -2083,7 +2085,7 @@
         function openEclBuilder() {
             var eclString = $('#fh-query_canvas-ExpText').val();
 
-            $("body").append("<ecl-builder id='ecl-builder' branch=" + options.edition + " api-url='/snowstorm/snomed-ct' ecl-string='" + eclString + "'></ecl-builder>");
+            $("body").append("<ecl-builder id='ecl-builder' branch=" + options.edition + " api-url='https://seabreeze.conteir.no' ecl-string='" + eclString + "'></ecl-builder>");
 
             const el = document.querySelector('ecl-builder');
             el.addEventListener('output', e => {
