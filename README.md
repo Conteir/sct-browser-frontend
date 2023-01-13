@@ -1,3 +1,5 @@
+Installation
+
 IHTSDO Browser Frontend
 =======================
 
